@@ -6,10 +6,10 @@
 
 ## Manual update steps
 
-Currently this spec is generated with the github.com/atombendor/go-jsonschema cli tool. I haven't yet bothered building this in github actions, so these are the manual steps I follow to update this repo.
+Currently this spec is generated with the [github.com/atombendor/go-jsonschema](github.com/atombender/go-jsonschema) cli tool. I haven't yet bothered building this in github actions, so these are the manual steps I follow to update this repo.
 
-1. Install github.com/atombender/go-jsonschema
-2. Clone github.com/iriusrisk/OpenThreatModel somewhere
+1. Install [github.com/atombender/go-jsonschema](github.com/atombender/go-jsonschema)
+2. Clone [github.com/iriusrisk/OpenThreatModel](github.com/iriusrisk/OpenThreatModel) somewhere
 3. From the root of the go-otm repo run: `go-jsonschema -p otm -o pkg/otm/otm.go -v ../../iriusrisk/OpenThreatModel/otm_schema.json`
 4. Check the diff
 5. Copy the `otm_schema.json` into [pkg/otm/testdata/otm_schema.json](pkg/otm/testdata/otm_schema.json)

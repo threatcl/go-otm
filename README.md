@@ -14,3 +14,7 @@ Currently this spec is generated with the github.com/atombendor/go-jsonschema cl
 4. Check the diff
 5. Copy the `otm_schema.json` into `pkg/otm/testdata/`
 6. Make sure that the `make test` tests pass - you _may_ need to update the `pkg/otm/testdata/EXAMPLE.json` file from the `OpenThreatModel` repo
+
+# Example
+
+The [main.go](main.go) demonstrates the use of the package, and will print out a JSON string.

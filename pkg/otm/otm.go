@@ -2,8 +2,10 @@
 
 package otm
 
-import "encoding/json"
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 type AssetInstance struct {
 	// Processed corresponds to the JSON schema field "processed".

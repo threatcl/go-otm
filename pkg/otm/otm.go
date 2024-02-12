@@ -5,36 +5,17 @@ package otm
 import "encoding/json"
 import "fmt"
 
-// UnmarshalJSON implements json.Unmarshaler.
-func (j *OtmSchemaJsonDataflowsElem) UnmarshalJSON(b []byte) error {
-	var raw map[string]interface{}
-	if err := json.Unmarshal(b, &raw); err != nil {
-		return err
-	}
-	if v, ok := raw["destination"]; !ok || v == nil {
-		return fmt.Errorf("field destination in OtmSchemaJsonDataflowsElem: required")
-	}
-	if v, ok := raw["id"]; !ok || v == nil {
-		return fmt.Errorf("field id in OtmSchemaJsonDataflowsElem: required")
-	}
-	if v, ok := raw["name"]; !ok || v == nil {
-		return fmt.Errorf("field name in OtmSchemaJsonDataflowsElem: required")
-	}
-	if v, ok := raw["source"]; !ok || v == nil {
-		return fmt.Errorf("field source in OtmSchemaJsonDataflowsElem: required")
-	}
-	type Plain OtmSchemaJsonDataflowsElem
-	var plain Plain
-	if err := json.Unmarshal(b, &plain); err != nil {
-		return err
-	}
-	*j = OtmSchemaJsonDataflowsElem(plain)
-	return nil
+type AssetInstance struct {
+	// Processed corresponds to the JSON schema field "processed".
+	Processed []*string `json:"processed,omitempty" yaml:"processed,omitempty" mapstructure:"processed,omitempty"`
+
+	// Stored corresponds to the JSON schema field "stored".
+	Stored []*string `json:"stored,omitempty" yaml:"stored,omitempty" mapstructure:"stored,omitempty"`
 }
 
 type OtmSchemaJson struct {
 	// Assets corresponds to the JSON schema field "assets".
-	Assets []interface{} `json:"assets,omitempty" yaml:"assets,omitempty" mapstructure:"assets,omitempty"`
+	Assets []OtmSchemaJsonAssetsElem `json:"assets,omitempty" yaml:"assets,omitempty" mapstructure:"assets,omitempty"`
 
 	// Components corresponds to the JSON schema field "components".
 	Components []OtmSchemaJsonComponentsElem `json:"components,omitempty" yaml:"components,omitempty" mapstructure:"components,omitempty"`
@@ -52,7 +33,7 @@ type OtmSchemaJson struct {
 	Project OtmSchemaJsonProject `json:"project" yaml:"project" mapstructure:"project"`
 
 	// Representations corresponds to the JSON schema field "representations".
-	Representations []interface{} `json:"representations,omitempty" yaml:"representations,omitempty" mapstructure:"representations,omitempty"`
+	Representations []OtmSchemaJsonRepresentationsElem `json:"representations,omitempty" yaml:"representations,omitempty" mapstructure:"representations,omitempty"`
 
 	// Threats corresponds to the JSON schema field "threats".
 	Threats []OtmSchemaJsonThreatsElem `json:"threats,omitempty" yaml:"threats,omitempty" mapstructure:"threats,omitempty"`
@@ -61,302 +42,9 @@ type OtmSchemaJson struct {
 	TrustZones []OtmSchemaJsonTrustZonesElem `json:"trustZones,omitempty" yaml:"trustZones,omitempty" mapstructure:"trustZones,omitempty"`
 }
 
-// UnmarshalJSON implements json.Unmarshaler.
-func (j *OtmSchemaJson) UnmarshalJSON(b []byte) error {
-	var raw map[string]interface{}
-	if err := json.Unmarshal(b, &raw); err != nil {
-		return err
-	}
-	if v, ok := raw["otmVersion"]; !ok || v == nil {
-		return fmt.Errorf("field otmVersion in OtmSchemaJson: required")
-	}
-	if v, ok := raw["project"]; !ok || v == nil {
-		return fmt.Errorf("field project in OtmSchemaJson: required")
-	}
-	type Plain OtmSchemaJson
-	var plain Plain
-	if err := json.Unmarshal(b, &plain); err != nil {
-		return err
-	}
-	*j = OtmSchemaJson(plain)
-	return nil
-}
-
-type AssetInstance struct {
-	// Processed corresponds to the JSON schema field "processed".
-	Processed []*string `json:"processed,omitempty" yaml:"processed,omitempty" mapstructure:"processed,omitempty"`
-
-	// Stored corresponds to the JSON schema field "stored".
-	Stored []*string `json:"stored,omitempty" yaml:"stored,omitempty" mapstructure:"stored,omitempty"`
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (j *OtmSchemaJsonTrustZonesElem) UnmarshalJSON(b []byte) error {
-	var raw map[string]interface{}
-	if err := json.Unmarshal(b, &raw); err != nil {
-		return err
-	}
-	if v, ok := raw["id"]; !ok || v == nil {
-		return fmt.Errorf("field id in OtmSchemaJsonTrustZonesElem: required")
-	}
-	if v, ok := raw["name"]; !ok || v == nil {
-		return fmt.Errorf("field name in OtmSchemaJsonTrustZonesElem: required")
-	}
-	if v, ok := raw["risk"]; !ok || v == nil {
-		return fmt.Errorf("field risk in OtmSchemaJsonTrustZonesElem: required")
-	}
-	type Plain OtmSchemaJsonTrustZonesElem
-	var plain Plain
-	if err := json.Unmarshal(b, &plain); err != nil {
-		return err
-	}
-	*j = OtmSchemaJsonTrustZonesElem(plain)
-	return nil
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (j *OtmSchemaJsonTrustZonesElemRisk) UnmarshalJSON(b []byte) error {
-	var raw map[string]interface{}
-	if err := json.Unmarshal(b, &raw); err != nil {
-		return err
-	}
-	if v, ok := raw["trustRating"]; !ok || v == nil {
-		return fmt.Errorf("field trustRating in OtmSchemaJsonTrustZonesElemRisk: required")
-	}
-	type Plain OtmSchemaJsonTrustZonesElemRisk
-	var plain Plain
-	if err := json.Unmarshal(b, &plain); err != nil {
-		return err
-	}
-	*j = OtmSchemaJsonTrustZonesElemRisk(plain)
-	return nil
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (j *Size) UnmarshalJSON(b []byte) error {
-	var raw map[string]interface{}
-	if err := json.Unmarshal(b, &raw); err != nil {
-		return err
-	}
-	if v, ok := raw["height"]; !ok || v == nil {
-		return fmt.Errorf("field height in Size: required")
-	}
-	if v, ok := raw["width"]; !ok || v == nil {
-		return fmt.Errorf("field width in Size: required")
-	}
-	type Plain Size
-	var plain Plain
-	if err := json.Unmarshal(b, &plain); err != nil {
-		return err
-	}
-	*j = Size(plain)
-	return nil
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (j *OtmSchemaJsonThreatsElem) UnmarshalJSON(b []byte) error {
-	var raw map[string]interface{}
-	if err := json.Unmarshal(b, &raw); err != nil {
-		return err
-	}
-	if v, ok := raw["id"]; !ok || v == nil {
-		return fmt.Errorf("field id in OtmSchemaJsonThreatsElem: required")
-	}
-	if v, ok := raw["name"]; !ok || v == nil {
-		return fmt.Errorf("field name in OtmSchemaJsonThreatsElem: required")
-	}
-	if v, ok := raw["risk"]; !ok || v == nil {
-		return fmt.Errorf("field risk in OtmSchemaJsonThreatsElem: required")
-	}
-	type Plain OtmSchemaJsonThreatsElem
-	var plain Plain
-	if err := json.Unmarshal(b, &plain); err != nil {
-		return err
-	}
-	*j = OtmSchemaJsonThreatsElem(plain)
-	return nil
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (j *RepresentationElement) UnmarshalJSON(b []byte) error {
-	var raw map[string]interface{}
-	if err := json.Unmarshal(b, &raw); err != nil {
-		return err
-	}
-	if v, ok := raw["id"]; !ok || v == nil {
-		return fmt.Errorf("field id in RepresentationElement: required")
-	}
-	if v, ok := raw["representation"]; !ok || v == nil {
-		return fmt.Errorf("field representation in RepresentationElement: required")
-	}
-	type Plain RepresentationElement
-	var plain Plain
-	if err := json.Unmarshal(b, &plain); err != nil {
-		return err
-	}
-	*j = RepresentationElement(plain)
-	return nil
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (j *OtmSchemaJsonThreatsElemRisk) UnmarshalJSON(b []byte) error {
-	var raw map[string]interface{}
-	if err := json.Unmarshal(b, &raw); err != nil {
-		return err
-	}
-	if v, ok := raw["impact"]; !ok || v == nil {
-		return fmt.Errorf("field impact in OtmSchemaJsonThreatsElemRisk: required")
-	}
-	if v, ok := raw["likelihood"]; !ok || v == nil {
-		return fmt.Errorf("field likelihood in OtmSchemaJsonThreatsElemRisk: required")
-	}
-	type Plain OtmSchemaJsonThreatsElemRisk
-	var plain Plain
-	if err := json.Unmarshal(b, &plain); err != nil {
-		return err
-	}
-	*j = OtmSchemaJsonThreatsElemRisk(plain)
-	return nil
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (j *ThreatMitigationsElem) UnmarshalJSON(b []byte) error {
-	var raw map[string]interface{}
-	if err := json.Unmarshal(b, &raw); err != nil {
-		return err
-	}
-	if v, ok := raw["mitigation"]; !ok || v == nil {
-		return fmt.Errorf("field mitigation in ThreatMitigationsElem: required")
-	}
-	if v, ok := raw["state"]; !ok || v == nil {
-		return fmt.Errorf("field state in ThreatMitigationsElem: required")
-	}
-	type Plain ThreatMitigationsElem
-	var plain Plain
-	if err := json.Unmarshal(b, &plain); err != nil {
-		return err
-	}
-	*j = ThreatMitigationsElem(plain)
-	return nil
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (j *OtmSchemaJsonProject) UnmarshalJSON(b []byte) error {
-	var raw map[string]interface{}
-	if err := json.Unmarshal(b, &raw); err != nil {
-		return err
-	}
-	if v, ok := raw["id"]; !ok || v == nil {
-		return fmt.Errorf("field id in OtmSchemaJsonProject: required")
-	}
-	if v, ok := raw["name"]; !ok || v == nil {
-		return fmt.Errorf("field name in OtmSchemaJsonProject: required")
-	}
-	type Plain OtmSchemaJsonProject
-	var plain Plain
-	if err := json.Unmarshal(b, &plain); err != nil {
-		return err
-	}
-	*j = OtmSchemaJsonProject(plain)
-	return nil
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (j *Threat) UnmarshalJSON(b []byte) error {
-	var raw map[string]interface{}
-	if err := json.Unmarshal(b, &raw); err != nil {
-		return err
-	}
-	if v, ok := raw["state"]; !ok || v == nil {
-		return fmt.Errorf("field state in Threat: required")
-	}
-	if v, ok := raw["threat"]; !ok || v == nil {
-		return fmt.Errorf("field threat in Threat: required")
-	}
-	type Plain Threat
-	var plain Plain
-	if err := json.Unmarshal(b, &plain); err != nil {
-		return err
-	}
-	*j = Threat(plain)
-	return nil
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (j *OtmSchemaJsonMitigationsElem) UnmarshalJSON(b []byte) error {
-	var raw map[string]interface{}
-	if err := json.Unmarshal(b, &raw); err != nil {
-		return err
-	}
-	if v, ok := raw["id"]; !ok || v == nil {
-		return fmt.Errorf("field id in OtmSchemaJsonMitigationsElem: required")
-	}
-	if v, ok := raw["name"]; !ok || v == nil {
-		return fmt.Errorf("field name in OtmSchemaJsonMitigationsElem: required")
-	}
-	if v, ok := raw["riskReduction"]; !ok || v == nil {
-		return fmt.Errorf("field riskReduction in OtmSchemaJsonMitigationsElem: required")
-	}
-	type Plain OtmSchemaJsonMitigationsElem
-	var plain Plain
-	if err := json.Unmarshal(b, &plain); err != nil {
-		return err
-	}
-	*j = OtmSchemaJsonMitigationsElem(plain)
-	return nil
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (j *Position) UnmarshalJSON(b []byte) error {
-	var raw map[string]interface{}
-	if err := json.Unmarshal(b, &raw); err != nil {
-		return err
-	}
-	if v, ok := raw["x"]; !ok || v == nil {
-		return fmt.Errorf("field x in Position: required")
-	}
-	if v, ok := raw["y"]; !ok || v == nil {
-		return fmt.Errorf("field y in Position: required")
-	}
-	type Plain Position
-	var plain Plain
-	if err := json.Unmarshal(b, &plain); err != nil {
-		return err
-	}
-	*j = Position(plain)
-	return nil
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (j *OtmSchemaJsonComponentsElem) UnmarshalJSON(b []byte) error {
-	var raw map[string]interface{}
-	if err := json.Unmarshal(b, &raw); err != nil {
-		return err
-	}
-	if v, ok := raw["id"]; !ok || v == nil {
-		return fmt.Errorf("field id in OtmSchemaJsonComponentsElem: required")
-	}
-	if v, ok := raw["name"]; !ok || v == nil {
-		return fmt.Errorf("field name in OtmSchemaJsonComponentsElem: required")
-	}
-	if v, ok := raw["parent"]; !ok || v == nil {
-		return fmt.Errorf("field parent in OtmSchemaJsonComponentsElem: required")
-	}
-	if v, ok := raw["type"]; !ok || v == nil {
-		return fmt.Errorf("field type in OtmSchemaJsonComponentsElem: required")
-	}
-	type Plain OtmSchemaJsonComponentsElem
-	var plain Plain
-	if err := json.Unmarshal(b, &plain); err != nil {
-		return err
-	}
-	*j = OtmSchemaJsonComponentsElem(plain)
-	return nil
-}
-
-type OtmSchemaJsonMitigationsElem struct {
+type OtmSchemaJsonAssetsElem struct {
 	// Attributes corresponds to the JSON schema field "attributes".
-	Attributes OtmSchemaJsonMitigationsElemAttributes `json:"attributes,omitempty" yaml:"attributes,omitempty" mapstructure:"attributes,omitempty"`
+	Attributes OtmSchemaJsonAssetsElemAttributes `json:"attributes,omitempty" yaml:"attributes,omitempty" mapstructure:"attributes,omitempty"`
 
 	// Description corresponds to the JSON schema field "description".
 	Description *string `json:"description,omitempty" yaml:"description,omitempty" mapstructure:"description,omitempty"`
@@ -367,40 +55,24 @@ type OtmSchemaJsonMitigationsElem struct {
 	// Name corresponds to the JSON schema field "name".
 	Name string `json:"name" yaml:"name" mapstructure:"name"`
 
-	// RiskReduction corresponds to the JSON schema field "riskReduction".
-	RiskReduction float64 `json:"riskReduction" yaml:"riskReduction" mapstructure:"riskReduction"`
+	// Risk corresponds to the JSON schema field "risk".
+	Risk OtmSchemaJsonAssetsElemRisk `json:"risk" yaml:"risk" mapstructure:"risk"`
 }
 
-type OtmSchemaJsonDataflowsElem struct {
-	// Assets corresponds to the JSON schema field "assets".
-	Assets []*string `json:"assets,omitempty" yaml:"assets,omitempty" mapstructure:"assets,omitempty"`
+type OtmSchemaJsonAssetsElemAttributes map[string]interface{}
 
-	// Attributes corresponds to the JSON schema field "attributes".
-	Attributes OtmSchemaJsonDataflowsElemAttributes `json:"attributes,omitempty" yaml:"attributes,omitempty" mapstructure:"attributes,omitempty"`
+type OtmSchemaJsonAssetsElemRisk struct {
+	// Availability corresponds to the JSON schema field "availability".
+	Availability float64 `json:"availability" yaml:"availability" mapstructure:"availability"`
 
-	// Bidirectional corresponds to the JSON schema field "bidirectional".
-	Bidirectional *bool `json:"bidirectional,omitempty" yaml:"bidirectional,omitempty" mapstructure:"bidirectional,omitempty"`
+	// Comment corresponds to the JSON schema field "comment".
+	Comment *string `json:"comment,omitempty" yaml:"comment,omitempty" mapstructure:"comment,omitempty"`
 
-	// Description corresponds to the JSON schema field "description".
-	Description *string `json:"description,omitempty" yaml:"description,omitempty" mapstructure:"description,omitempty"`
+	// Confidentiality corresponds to the JSON schema field "confidentiality".
+	Confidentiality float64 `json:"confidentiality" yaml:"confidentiality" mapstructure:"confidentiality"`
 
-	// Destination corresponds to the JSON schema field "destination".
-	Destination string `json:"destination" yaml:"destination" mapstructure:"destination"`
-
-	// Id corresponds to the JSON schema field "id".
-	Id string `json:"id" yaml:"id" mapstructure:"id"`
-
-	// Name corresponds to the JSON schema field "name".
-	Name string `json:"name" yaml:"name" mapstructure:"name"`
-
-	// Source corresponds to the JSON schema field "source".
-	Source string `json:"source" yaml:"source" mapstructure:"source"`
-
-	// Tags corresponds to the JSON schema field "tags".
-	Tags []*string `json:"tags,omitempty" yaml:"tags,omitempty" mapstructure:"tags,omitempty"`
-
-	// Threats corresponds to the JSON schema field "threats".
-	Threats []Threat `json:"threats,omitempty" yaml:"threats,omitempty" mapstructure:"threats,omitempty"`
+	// Integrity corresponds to the JSON schema field "integrity".
+	Integrity float64 `json:"integrity" yaml:"integrity" mapstructure:"integrity"`
 }
 
 type OtmSchemaJsonComponentsElem struct {
@@ -435,9 +107,58 @@ type OtmSchemaJsonComponentsElem struct {
 	Type string `json:"type" yaml:"type" mapstructure:"type"`
 }
 
+type OtmSchemaJsonComponentsElemAttributes map[string]interface{}
+
+type OtmSchemaJsonDataflowsElem struct {
+	// Assets corresponds to the JSON schema field "assets".
+	Assets []*string `json:"assets,omitempty" yaml:"assets,omitempty" mapstructure:"assets,omitempty"`
+
+	// Attributes corresponds to the JSON schema field "attributes".
+	Attributes OtmSchemaJsonDataflowsElemAttributes `json:"attributes,omitempty" yaml:"attributes,omitempty" mapstructure:"attributes,omitempty"`
+
+	// Bidirectional corresponds to the JSON schema field "bidirectional".
+	Bidirectional *bool `json:"bidirectional,omitempty" yaml:"bidirectional,omitempty" mapstructure:"bidirectional,omitempty"`
+
+	// Description corresponds to the JSON schema field "description".
+	Description *string `json:"description,omitempty" yaml:"description,omitempty" mapstructure:"description,omitempty"`
+
+	// Destination corresponds to the JSON schema field "destination".
+	Destination string `json:"destination" yaml:"destination" mapstructure:"destination"`
+
+	// Id corresponds to the JSON schema field "id".
+	Id string `json:"id" yaml:"id" mapstructure:"id"`
+
+	// Name corresponds to the JSON schema field "name".
+	Name string `json:"name" yaml:"name" mapstructure:"name"`
+
+	// Source corresponds to the JSON schema field "source".
+	Source string `json:"source" yaml:"source" mapstructure:"source"`
+
+	// Tags corresponds to the JSON schema field "tags".
+	Tags []*string `json:"tags,omitempty" yaml:"tags,omitempty" mapstructure:"tags,omitempty"`
+
+	// Threats corresponds to the JSON schema field "threats".
+	Threats []Threat `json:"threats,omitempty" yaml:"threats,omitempty" mapstructure:"threats,omitempty"`
+}
+
 type OtmSchemaJsonDataflowsElemAttributes map[string]interface{}
 
-type OtmSchemaJsonComponentsElemAttributes map[string]interface{}
+type OtmSchemaJsonMitigationsElem struct {
+	// Attributes corresponds to the JSON schema field "attributes".
+	Attributes OtmSchemaJsonMitigationsElemAttributes `json:"attributes,omitempty" yaml:"attributes,omitempty" mapstructure:"attributes,omitempty"`
+
+	// Description corresponds to the JSON schema field "description".
+	Description *string `json:"description,omitempty" yaml:"description,omitempty" mapstructure:"description,omitempty"`
+
+	// Id corresponds to the JSON schema field "id".
+	Id string `json:"id" yaml:"id" mapstructure:"id"`
+
+	// Name corresponds to the JSON schema field "name".
+	Name string `json:"name" yaml:"name" mapstructure:"name"`
+
+	// RiskReduction corresponds to the JSON schema field "riskReduction".
+	RiskReduction float64 `json:"riskReduction" yaml:"riskReduction" mapstructure:"riskReduction"`
+}
 
 type OtmSchemaJsonMitigationsElemAttributes map[string]interface{}
 
@@ -466,6 +187,36 @@ type OtmSchemaJsonProject struct {
 
 type OtmSchemaJsonProjectAttributes map[string]interface{}
 
+type OtmSchemaJsonRepresentationsElem struct {
+	// Attributes corresponds to the JSON schema field "attributes".
+	Attributes OtmSchemaJsonRepresentationsElemAttributes `json:"attributes,omitempty" yaml:"attributes,omitempty" mapstructure:"attributes,omitempty"`
+
+	// Description corresponds to the JSON schema field "description".
+	Description *string `json:"description,omitempty" yaml:"description,omitempty" mapstructure:"description,omitempty"`
+
+	// Id corresponds to the JSON schema field "id".
+	Id string `json:"id" yaml:"id" mapstructure:"id"`
+
+	// Name corresponds to the JSON schema field "name".
+	Name string `json:"name" yaml:"name" mapstructure:"name"`
+
+	// Repository corresponds to the JSON schema field "repository".
+	Repository *OtmSchemaJsonRepresentationsElemRepository `json:"repository,omitempty" yaml:"repository,omitempty" mapstructure:"repository,omitempty"`
+
+	// Size corresponds to the JSON schema field "size".
+	Size *Size `json:"size,omitempty" yaml:"size,omitempty" mapstructure:"size,omitempty"`
+
+	// Type corresponds to the JSON schema field "type".
+	Type string `json:"type" yaml:"type" mapstructure:"type"`
+}
+
+type OtmSchemaJsonRepresentationsElemAttributes map[string]interface{}
+
+type OtmSchemaJsonRepresentationsElemRepository struct {
+	// Url corresponds to the JSON schema field "url".
+	Url *string `json:"url" yaml:"url" mapstructure:"url"`
+}
+
 type OtmSchemaJsonThreatsElem struct {
 	// Attributes corresponds to the JSON schema field "attributes".
 	Attributes OtmSchemaJsonThreatsElemAttributes `json:"attributes,omitempty" yaml:"attributes,omitempty" mapstructure:"attributes,omitempty"`
@@ -492,69 +243,92 @@ type OtmSchemaJsonThreatsElem struct {
 	Tags []*string `json:"tags,omitempty" yaml:"tags,omitempty" mapstructure:"tags,omitempty"`
 }
 
-type OtmSchemaJsonThreatsElemAttributes map[string]interface{}
-
-type OtmSchemaJsonThreatsElemRisk struct {
-	// Impact corresponds to the JSON schema field "impact".
-	Impact float64 `json:"impact" yaml:"impact" mapstructure:"impact"`
-
-	// ImpactComment corresponds to the JSON schema field "impactComment".
-	ImpactComment *string `json:"impactComment,omitempty" yaml:"impactComment,omitempty" mapstructure:"impactComment,omitempty"`
-
-	// Likelihood corresponds to the JSON schema field "likelihood".
-	Likelihood *float64 `json:"likelihood" yaml:"likelihood" mapstructure:"likelihood"`
-
-	// LikelihoodComment corresponds to the JSON schema field "likelihoodComment".
-	LikelihoodComment *string `json:"likelihoodComment,omitempty" yaml:"likelihoodComment,omitempty" mapstructure:"likelihoodComment,omitempty"`
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *OtmSchemaJson) UnmarshalJSON(b []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if v, ok := raw["otmVersion"]; !ok || v == nil {
+		return fmt.Errorf("field otmVersion in OtmSchemaJson: required")
+	}
+	if v, ok := raw["project"]; !ok || v == nil {
+		return fmt.Errorf("field project in OtmSchemaJson: required")
+	}
+	type Plain OtmSchemaJson
+	var plain Plain
+	if err := json.Unmarshal(b, &plain); err != nil {
+		return err
+	}
+	*j = OtmSchemaJson(plain)
+	return nil
 }
 
-type OtmSchemaJsonTrustZonesElem struct {
-	// Attributes corresponds to the JSON schema field "attributes".
-	Attributes OtmSchemaJsonTrustZonesElemAttributes `json:"attributes,omitempty" yaml:"attributes,omitempty" mapstructure:"attributes,omitempty"`
+type Threat struct {
+	// Mitigations corresponds to the JSON schema field "mitigations".
+	Mitigations []ThreatMitigationsElem `json:"mitigations,omitempty" yaml:"mitigations,omitempty" mapstructure:"mitigations,omitempty"`
 
-	// Description corresponds to the JSON schema field "description".
-	Description *string `json:"description,omitempty" yaml:"description,omitempty" mapstructure:"description,omitempty"`
+	// State corresponds to the JSON schema field "state".
+	State string `json:"state" yaml:"state" mapstructure:"state"`
 
-	// Id corresponds to the JSON schema field "id".
-	Id string `json:"id" yaml:"id" mapstructure:"id"`
-
-	// Name corresponds to the JSON schema field "name".
-	Name string `json:"name" yaml:"name" mapstructure:"name"`
-
-	// Parent corresponds to the JSON schema field "parent".
-	Parent *Parent `json:"parent,omitempty" yaml:"parent,omitempty" mapstructure:"parent,omitempty"`
-
-	// Representations corresponds to the JSON schema field "representations".
-	Representations []RepresentationElement `json:"representations,omitempty" yaml:"representations,omitempty" mapstructure:"representations,omitempty"`
-
-	// Risk corresponds to the JSON schema field "risk".
-	Risk OtmSchemaJsonTrustZonesElemRisk `json:"risk" yaml:"risk" mapstructure:"risk"`
-
-	// Type corresponds to the JSON schema field "type".
-	Type *string `json:"type,omitempty" yaml:"type,omitempty" mapstructure:"type,omitempty"`
+	// Threat corresponds to the JSON schema field "threat".
+	Threat string `json:"threat" yaml:"threat" mapstructure:"threat"`
 }
 
-type OtmSchemaJsonTrustZonesElemAttributes map[string]interface{}
+type ThreatMitigationsElem struct {
+	// Mitigation corresponds to the JSON schema field "mitigation".
+	Mitigation *string `json:"mitigation" yaml:"mitigation" mapstructure:"mitigation"`
 
-type OtmSchemaJsonTrustZonesElemRisk struct {
-	// TrustRating corresponds to the JSON schema field "trustRating".
-	TrustRating float64 `json:"trustRating" yaml:"trustRating" mapstructure:"trustRating"`
+	// State corresponds to the JSON schema field "state".
+	State *string `json:"state" yaml:"state" mapstructure:"state"`
 }
 
-type Parent struct {
-	// Component corresponds to the JSON schema field "component".
-	Component *string `json:"component,omitempty" yaml:"component,omitempty" mapstructure:"component,omitempty"`
-
-	// TrustZone corresponds to the JSON schema field "trustZone".
-	TrustZone *string `json:"trustZone,omitempty" yaml:"trustZone,omitempty" mapstructure:"trustZone,omitempty"`
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *OtmSchemaJsonComponentsElem) UnmarshalJSON(b []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if v, ok := raw["id"]; !ok || v == nil {
+		return fmt.Errorf("field id in OtmSchemaJsonComponentsElem: required")
+	}
+	if v, ok := raw["name"]; !ok || v == nil {
+		return fmt.Errorf("field name in OtmSchemaJsonComponentsElem: required")
+	}
+	if v, ok := raw["parent"]; !ok || v == nil {
+		return fmt.Errorf("field parent in OtmSchemaJsonComponentsElem: required")
+	}
+	if v, ok := raw["type"]; !ok || v == nil {
+		return fmt.Errorf("field type in OtmSchemaJsonComponentsElem: required")
+	}
+	type Plain OtmSchemaJsonComponentsElem
+	var plain Plain
+	if err := json.Unmarshal(b, &plain); err != nil {
+		return err
+	}
+	*j = OtmSchemaJsonComponentsElem(plain)
+	return nil
 }
 
-type Position struct {
-	// X corresponds to the JSON schema field "x".
-	X float64 `json:"x" yaml:"x" mapstructure:"x"`
-
-	// Y corresponds to the JSON schema field "y".
-	Y float64 `json:"y" yaml:"y" mapstructure:"y"`
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *RepresentationElement) UnmarshalJSON(b []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if v, ok := raw["id"]; !ok || v == nil {
+		return fmt.Errorf("field id in RepresentationElement: required")
+	}
+	if v, ok := raw["representation"]; !ok || v == nil {
+		return fmt.Errorf("field representation in RepresentationElement: required")
+	}
+	type Plain RepresentationElement
+	var plain Plain
+	if err := json.Unmarshal(b, &plain); err != nil {
+		return err
+	}
+	*j = RepresentationElement(plain)
+	return nil
 }
 
 type RepresentationElement struct {
@@ -586,7 +360,53 @@ type RepresentationElement struct {
 	Size *Size `json:"size,omitempty" yaml:"size,omitempty" mapstructure:"size,omitempty"`
 }
 
-type RepresentationElementAttributes map[string]interface{}
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *OtmSchemaJsonDataflowsElem) UnmarshalJSON(b []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if v, ok := raw["destination"]; !ok || v == nil {
+		return fmt.Errorf("field destination in OtmSchemaJsonDataflowsElem: required")
+	}
+	if v, ok := raw["id"]; !ok || v == nil {
+		return fmt.Errorf("field id in OtmSchemaJsonDataflowsElem: required")
+	}
+	if v, ok := raw["name"]; !ok || v == nil {
+		return fmt.Errorf("field name in OtmSchemaJsonDataflowsElem: required")
+	}
+	if v, ok := raw["source"]; !ok || v == nil {
+		return fmt.Errorf("field source in OtmSchemaJsonDataflowsElem: required")
+	}
+	type Plain OtmSchemaJsonDataflowsElem
+	var plain Plain
+	if err := json.Unmarshal(b, &plain); err != nil {
+		return err
+	}
+	*j = OtmSchemaJsonDataflowsElem(plain)
+	return nil
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *Size) UnmarshalJSON(b []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if v, ok := raw["height"]; !ok || v == nil {
+		return fmt.Errorf("field height in Size: required")
+	}
+	if v, ok := raw["width"]; !ok || v == nil {
+		return fmt.Errorf("field width in Size: required")
+	}
+	type Plain Size
+	var plain Plain
+	if err := json.Unmarshal(b, &plain); err != nil {
+		return err
+	}
+	*j = Size(plain)
+	return nil
+}
 
 type Size struct {
 	// Height corresponds to the JSON schema field "height".
@@ -596,21 +416,354 @@ type Size struct {
 	Width float64 `json:"width" yaml:"width" mapstructure:"width"`
 }
 
-type Threat struct {
-	// Mitigations corresponds to the JSON schema field "mitigations".
-	Mitigations []ThreatMitigationsElem `json:"mitigations,omitempty" yaml:"mitigations,omitempty" mapstructure:"mitigations,omitempty"`
-
-	// State corresponds to the JSON schema field "state".
-	State string `json:"state" yaml:"state" mapstructure:"state"`
-
-	// Threat corresponds to the JSON schema field "threat".
-	Threat string `json:"threat" yaml:"threat" mapstructure:"threat"`
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *OtmSchemaJsonMitigationsElem) UnmarshalJSON(b []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if v, ok := raw["id"]; !ok || v == nil {
+		return fmt.Errorf("field id in OtmSchemaJsonMitigationsElem: required")
+	}
+	if v, ok := raw["name"]; !ok || v == nil {
+		return fmt.Errorf("field name in OtmSchemaJsonMitigationsElem: required")
+	}
+	if v, ok := raw["riskReduction"]; !ok || v == nil {
+		return fmt.Errorf("field riskReduction in OtmSchemaJsonMitigationsElem: required")
+	}
+	type Plain OtmSchemaJsonMitigationsElem
+	var plain Plain
+	if err := json.Unmarshal(b, &plain); err != nil {
+		return err
+	}
+	*j = OtmSchemaJsonMitigationsElem(plain)
+	return nil
 }
 
-type ThreatMitigationsElem struct {
-	// Mitigation corresponds to the JSON schema field "mitigation".
-	Mitigation *string `json:"mitigation" yaml:"mitigation" mapstructure:"mitigation"`
+type RepresentationElementAttributes map[string]interface{}
 
-	// State corresponds to the JSON schema field "state".
-	State *string `json:"state" yaml:"state" mapstructure:"state"`
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *Position) UnmarshalJSON(b []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if v, ok := raw["x"]; !ok || v == nil {
+		return fmt.Errorf("field x in Position: required")
+	}
+	if v, ok := raw["y"]; !ok || v == nil {
+		return fmt.Errorf("field y in Position: required")
+	}
+	type Plain Position
+	var plain Plain
+	if err := json.Unmarshal(b, &plain); err != nil {
+		return err
+	}
+	*j = Position(plain)
+	return nil
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *OtmSchemaJsonProject) UnmarshalJSON(b []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if v, ok := raw["id"]; !ok || v == nil {
+		return fmt.Errorf("field id in OtmSchemaJsonProject: required")
+	}
+	if v, ok := raw["name"]; !ok || v == nil {
+		return fmt.Errorf("field name in OtmSchemaJsonProject: required")
+	}
+	type Plain OtmSchemaJsonProject
+	var plain Plain
+	if err := json.Unmarshal(b, &plain); err != nil {
+		return err
+	}
+	*j = OtmSchemaJsonProject(plain)
+	return nil
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *ThreatMitigationsElem) UnmarshalJSON(b []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if v, ok := raw["mitigation"]; !ok || v == nil {
+		return fmt.Errorf("field mitigation in ThreatMitigationsElem: required")
+	}
+	if v, ok := raw["state"]; !ok || v == nil {
+		return fmt.Errorf("field state in ThreatMitigationsElem: required")
+	}
+	type Plain ThreatMitigationsElem
+	var plain Plain
+	if err := json.Unmarshal(b, &plain); err != nil {
+		return err
+	}
+	*j = ThreatMitigationsElem(plain)
+	return nil
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *OtmSchemaJsonRepresentationsElemRepository) UnmarshalJSON(b []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if v, ok := raw["url"]; !ok || v == nil {
+		return fmt.Errorf("field url in OtmSchemaJsonRepresentationsElemRepository: required")
+	}
+	type Plain OtmSchemaJsonRepresentationsElemRepository
+	var plain Plain
+	if err := json.Unmarshal(b, &plain); err != nil {
+		return err
+	}
+	*j = OtmSchemaJsonRepresentationsElemRepository(plain)
+	return nil
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *OtmSchemaJsonAssetsElem) UnmarshalJSON(b []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if v, ok := raw["id"]; !ok || v == nil {
+		return fmt.Errorf("field id in OtmSchemaJsonAssetsElem: required")
+	}
+	if v, ok := raw["name"]; !ok || v == nil {
+		return fmt.Errorf("field name in OtmSchemaJsonAssetsElem: required")
+	}
+	if v, ok := raw["risk"]; !ok || v == nil {
+		return fmt.Errorf("field risk in OtmSchemaJsonAssetsElem: required")
+	}
+	type Plain OtmSchemaJsonAssetsElem
+	var plain Plain
+	if err := json.Unmarshal(b, &plain); err != nil {
+		return err
+	}
+	*j = OtmSchemaJsonAssetsElem(plain)
+	return nil
+}
+
+type Position struct {
+	// X corresponds to the JSON schema field "x".
+	X float64 `json:"x" yaml:"x" mapstructure:"x"`
+
+	// Y corresponds to the JSON schema field "y".
+	Y float64 `json:"y" yaml:"y" mapstructure:"y"`
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *OtmSchemaJsonRepresentationsElem) UnmarshalJSON(b []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if v, ok := raw["id"]; !ok || v == nil {
+		return fmt.Errorf("field id in OtmSchemaJsonRepresentationsElem: required")
+	}
+	if v, ok := raw["name"]; !ok || v == nil {
+		return fmt.Errorf("field name in OtmSchemaJsonRepresentationsElem: required")
+	}
+	if v, ok := raw["type"]; !ok || v == nil {
+		return fmt.Errorf("field type in OtmSchemaJsonRepresentationsElem: required")
+	}
+	type Plain OtmSchemaJsonRepresentationsElem
+	var plain Plain
+	if err := json.Unmarshal(b, &plain); err != nil {
+		return err
+	}
+	*j = OtmSchemaJsonRepresentationsElem(plain)
+	return nil
+}
+
+type OtmSchemaJsonThreatsElemAttributes map[string]interface{}
+
+type OtmSchemaJsonThreatsElemRisk struct {
+	// Impact corresponds to the JSON schema field "impact".
+	Impact float64 `json:"impact" yaml:"impact" mapstructure:"impact"`
+
+	// ImpactComment corresponds to the JSON schema field "impactComment".
+	ImpactComment *string `json:"impactComment,omitempty" yaml:"impactComment,omitempty" mapstructure:"impactComment,omitempty"`
+
+	// Likelihood corresponds to the JSON schema field "likelihood".
+	Likelihood *float64 `json:"likelihood" yaml:"likelihood" mapstructure:"likelihood"`
+
+	// LikelihoodComment corresponds to the JSON schema field "likelihoodComment".
+	LikelihoodComment *string `json:"likelihoodComment,omitempty" yaml:"likelihoodComment,omitempty" mapstructure:"likelihoodComment,omitempty"`
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *OtmSchemaJsonThreatsElemRisk) UnmarshalJSON(b []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if v, ok := raw["impact"]; !ok || v == nil {
+		return fmt.Errorf("field impact in OtmSchemaJsonThreatsElemRisk: required")
+	}
+	if v, ok := raw["likelihood"]; !ok || v == nil {
+		return fmt.Errorf("field likelihood in OtmSchemaJsonThreatsElemRisk: required")
+	}
+	type Plain OtmSchemaJsonThreatsElemRisk
+	var plain Plain
+	if err := json.Unmarshal(b, &plain); err != nil {
+		return err
+	}
+	*j = OtmSchemaJsonThreatsElemRisk(plain)
+	return nil
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *Threat) UnmarshalJSON(b []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if v, ok := raw["state"]; !ok || v == nil {
+		return fmt.Errorf("field state in Threat: required")
+	}
+	if v, ok := raw["threat"]; !ok || v == nil {
+		return fmt.Errorf("field threat in Threat: required")
+	}
+	type Plain Threat
+	var plain Plain
+	if err := json.Unmarshal(b, &plain); err != nil {
+		return err
+	}
+	*j = Threat(plain)
+	return nil
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *OtmSchemaJsonThreatsElem) UnmarshalJSON(b []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if v, ok := raw["id"]; !ok || v == nil {
+		return fmt.Errorf("field id in OtmSchemaJsonThreatsElem: required")
+	}
+	if v, ok := raw["name"]; !ok || v == nil {
+		return fmt.Errorf("field name in OtmSchemaJsonThreatsElem: required")
+	}
+	if v, ok := raw["risk"]; !ok || v == nil {
+		return fmt.Errorf("field risk in OtmSchemaJsonThreatsElem: required")
+	}
+	type Plain OtmSchemaJsonThreatsElem
+	var plain Plain
+	if err := json.Unmarshal(b, &plain); err != nil {
+		return err
+	}
+	*j = OtmSchemaJsonThreatsElem(plain)
+	return nil
+}
+
+type OtmSchemaJsonTrustZonesElemAttributes map[string]interface{}
+
+type OtmSchemaJsonTrustZonesElemRisk struct {
+	// TrustRating corresponds to the JSON schema field "trustRating".
+	TrustRating float64 `json:"trustRating" yaml:"trustRating" mapstructure:"trustRating"`
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *OtmSchemaJsonTrustZonesElemRisk) UnmarshalJSON(b []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if v, ok := raw["trustRating"]; !ok || v == nil {
+		return fmt.Errorf("field trustRating in OtmSchemaJsonTrustZonesElemRisk: required")
+	}
+	type Plain OtmSchemaJsonTrustZonesElemRisk
+	var plain Plain
+	if err := json.Unmarshal(b, &plain); err != nil {
+		return err
+	}
+	*j = OtmSchemaJsonTrustZonesElemRisk(plain)
+	return nil
+}
+
+type OtmSchemaJsonTrustZonesElem struct {
+	// Attributes corresponds to the JSON schema field "attributes".
+	Attributes OtmSchemaJsonTrustZonesElemAttributes `json:"attributes,omitempty" yaml:"attributes,omitempty" mapstructure:"attributes,omitempty"`
+
+	// Description corresponds to the JSON schema field "description".
+	Description *string `json:"description,omitempty" yaml:"description,omitempty" mapstructure:"description,omitempty"`
+
+	// Id corresponds to the JSON schema field "id".
+	Id string `json:"id" yaml:"id" mapstructure:"id"`
+
+	// Name corresponds to the JSON schema field "name".
+	Name string `json:"name" yaml:"name" mapstructure:"name"`
+
+	// Parent corresponds to the JSON schema field "parent".
+	Parent *Parent `json:"parent,omitempty" yaml:"parent,omitempty" mapstructure:"parent,omitempty"`
+
+	// Representations corresponds to the JSON schema field "representations".
+	Representations []RepresentationElement `json:"representations,omitempty" yaml:"representations,omitempty" mapstructure:"representations,omitempty"`
+
+	// Risk corresponds to the JSON schema field "risk".
+	Risk OtmSchemaJsonTrustZonesElemRisk `json:"risk" yaml:"risk" mapstructure:"risk"`
+
+	// Type corresponds to the JSON schema field "type".
+	Type *string `json:"type,omitempty" yaml:"type,omitempty" mapstructure:"type,omitempty"`
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *OtmSchemaJsonTrustZonesElem) UnmarshalJSON(b []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if v, ok := raw["id"]; !ok || v == nil {
+		return fmt.Errorf("field id in OtmSchemaJsonTrustZonesElem: required")
+	}
+	if v, ok := raw["name"]; !ok || v == nil {
+		return fmt.Errorf("field name in OtmSchemaJsonTrustZonesElem: required")
+	}
+	if v, ok := raw["risk"]; !ok || v == nil {
+		return fmt.Errorf("field risk in OtmSchemaJsonTrustZonesElem: required")
+	}
+	type Plain OtmSchemaJsonTrustZonesElem
+	var plain Plain
+	if err := json.Unmarshal(b, &plain); err != nil {
+		return err
+	}
+	*j = OtmSchemaJsonTrustZonesElem(plain)
+	return nil
+}
+
+type Parent struct {
+	// Component corresponds to the JSON schema field "component".
+	Component *string `json:"component,omitempty" yaml:"component,omitempty" mapstructure:"component,omitempty"`
+
+	// TrustZone corresponds to the JSON schema field "trustZone".
+	TrustZone *string `json:"trustZone,omitempty" yaml:"trustZone,omitempty" mapstructure:"trustZone,omitempty"`
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (j *OtmSchemaJsonAssetsElemRisk) UnmarshalJSON(b []byte) error {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if v, ok := raw["availability"]; !ok || v == nil {
+		return fmt.Errorf("field availability in OtmSchemaJsonAssetsElemRisk: required")
+	}
+	if v, ok := raw["confidentiality"]; !ok || v == nil {
+		return fmt.Errorf("field confidentiality in OtmSchemaJsonAssetsElemRisk: required")
+	}
+	if v, ok := raw["integrity"]; !ok || v == nil {
+		return fmt.Errorf("field integrity in OtmSchemaJsonAssetsElemRisk: required")
+	}
+	type Plain OtmSchemaJsonAssetsElemRisk
+	var plain Plain
+	if err := json.Unmarshal(b, &plain); err != nil {
+		return err
+	}
+	*j = OtmSchemaJsonAssetsElemRisk(plain)
+	return nil
 }

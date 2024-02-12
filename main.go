@@ -3,90 +3,122 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 
-	"github.com/wI2L/jsondiff"
 	"github.com/xntrik/go-otm/pkg/otm"
 )
 
 func main() {
-	// blep := otm.OpenThreatModelSpecification{}
 
-	// fmt.Printf("%+v\n", blep)
+	// The below is an example github.com/xntrik/hcltm threat model
 
-	// var newBlep otm.OpenThreatModelSpecification
-	var newBlep otm.OtmSchemaJson
+	// spec_version = "0.1.6"
+	//
+	// threatmodel "Tower of London" {
+	//   description = "A historic castle"
+	//   author = "@xntrik"
+	//
+	//   attributes {
+	//     new_initiative = "true"
+	//     internet_facing = "true"
+	//     initiative_size = "Small"
+	//   }
+	//
+	//   additional_attribute "network_segment" {
+	//     value = "dmz"
+	//   }
+	//
+	//   information_asset "crown jewels" {
+	//     description = "including the imperial state crown"
+	//     information_classification = "Confidential"
+	//   }
+	//
+	//   usecase {
+	//     description = "The Queen can fetch the crown"
+	//   }
+	//
+	//   third_party_dependency "community watch" {
+	//     description = "The community watch helps guard the premise"
+	//     uptime_dependency = "degraded"
+	//   }
+	//
+	//   threat {
+	//     description = "Someone who isn't the Queen steals the crown"
+	//     impacts = ["Confidentiality"]
+	//
+	//     expanded_control "Lots of Guards" {
+	//       implemented = true
+	//       description = "Lots of guards patrol the area"
+	//       implementation_notes = "They are trained to be guards as well"
+	//       risk_reduction = 80
+	//     }
+	//   }
+	//
+	// }
 
-	jsonFile, err := os.Open("EXAMPLE.json")
+	// Now lets use the github.com/xntrik/go-otm/pkg/otm to create an OTM struct
+	myOtm := otm.OtmSchemaJson{}
+
+	myOtm.OtmVersion = "0.2.0"
+
+	myOtm.Project.Name = "Tower of London"
+	myOtm.Project.Id = "tower-of-london"
+	description := "A historic castle"
+	myOtm.Project.Description = &description
+	owner := "@xntrik"
+	myOtm.Project.Owner = &owner
+	myOtm.Project.Attributes = map[string]interface{}{
+		"new_initiative":  "true",
+		"internet_facing": "true",
+		"initiative_size": "Small",
+		"network_segment": "dmz",
+	}
+
+	assetDescription := "including the imperial state crown"
+	asset := otm.OtmSchemaJsonAssetsElem{
+		Name:        "crown jewels",
+		Id:          "crown-jewels",
+		Description: &assetDescription,
+		Attributes: map[string]interface{}{
+			"information_classification": "Confidential",
+		},
+	}
+
+	myOtm.Assets = append(myOtm.Assets, asset)
+
+	infoDisclosure := "Information Disclosure"
+	threatDescription := "Someone who isn't the Queen steals the Crown"
+	threat := otm.OtmSchemaJsonThreatsElem{
+		Description: &threatDescription,
+		Id:          "crown-theft",
+		Name:        "Crown theft",
+		Categories: []*string{
+			&infoDisclosure,
+		},
+	}
+
+	myOtm.Threats = append(myOtm.Threats, threat)
+
+	mitigationDescription := "They are trained to be guards as well"
+	mitigation := otm.OtmSchemaJsonMitigationsElem{
+		Name:          "Lots of Guards",
+		Id:            "lots-of-guards",
+		Description:   &mitigationDescription,
+		RiskReduction: 80,
+		Attributes: map[string]interface{}{
+			"implemented": "true",
+		},
+	}
+
+	myOtm.Mitigations = append(myOtm.Mitigations, mitigation)
+
+	// Marshal into a JSON byte slice
+	jsonOut, err := json.Marshal(myOtm)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	defer jsonFile.Close()
-
-	byteVals, err := ioutil.ReadAll(jsonFile)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	newBlep.UnmarshalJSON(byteVals)
-
-	// fmt.Printf("%+v\n=======\n", newBlep)
-
-	jsonOut, err := json.Marshal(newBlep)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
+	// Finally we print it out
 	fmt.Printf("%s\n", jsonOut)
-
-	// fileOut, err := newBlep.MarshalJSON()
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	os.Exit(1)
-	// }
-	//
-	_ = ioutil.WriteFile("test.json", jsonOut, 0644)
-	//
-	// os.Stdout.Write(fileOut)
-
-	// patch, err := jsondiff.Compare(jsonFile, fileOut)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	os.Exit(1)
-	// }
-
-	// // b, err := json.MarshalIndent(patch, "", "  ")
-	// _, err = json.MarshalIndent(patch, "", "  ")
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	os.Exit(1)
-	// }
-
-	// fmt.Printf("%+v\n", b)
-	// os.Stdout.Write(b)
-
-	patch, err := jsondiff.CompareJSON(byteVals, jsonOut, jsondiff.Equivalent())
-	// patch, err = jsondiff.CompareJSON(byteVals, fileOut)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	fmt.Printf("=====\n%+v\n", patch)
-
-	b, err := json.MarshalIndent(patch, "", "  ")
-	// _, err = json.MarshalIndent(patch, "", "  ")
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	// fmt.Printf("%+v\n", b)
-	os.Stdout.Write(b)
-
 }

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/xntrik/go-otm/pkg/otm"
+	"github.com/threatcl/go-otm/pkg/otm"
 )
 
 func main() {
@@ -56,7 +56,7 @@ func main() {
 	//
 	// }
 
-	// Now lets use the github.com/xntrik/go-otm/pkg/otm to create an OTM struct
+	// Now lets use the github.com/threatcl/go-otm/pkg/otm to create an OTM struct
 	myOtm := otm.OtmSchemaJson{}
 
 	myOtm.OtmVersion = "0.2.0"
